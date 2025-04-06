@@ -22,9 +22,14 @@ const About = () => {
               <div className="p-6">
                 <h2 className="mb-4 text-2xl font-semibold">About the Developer</h2>
                 <p className="mb-4">
-                  I'm passionate about creating tools that help ensure AI systems are truthful, 
-                  helpful, and aligned with human values. This benchmark system is designed to 
-                  evaluate AI responses against expected standards.
+                 🧠 About Me
+I’m Rishi — a developer who believes that good code doesn’t just solve problems, it reveals deeper truths. I build with clarity, question with curiosity, and think in systems. Whether it's engineering logic flows, evaluating AI behavior, or structuring ethical frameworks, I don’t just ship features — I design intent.
+
+My focus lies in crafting technologies that matter — meaningful, thoughtful, and built to evolve. I care about how systems impact the world, how users feel when they interact with them, and how intelligence (artificial or human) can be guided toward better outcomes.
+
+Growth is my language. Code is just one of its dialects.
+
+
                 </p>
                 <p className="mb-4">
                   Every new moment is a fresh start: feeling good, unstoppable, and alive.
