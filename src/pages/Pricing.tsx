@@ -133,7 +133,7 @@ const Pricing = () => {
         </div>
 
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          <p>For demo purposes, use "PREMIUM123" or "LIFETIME456" as activation keys</p>
+          <p>For demo purposes, use "PREMIUM123", "LIFETIME456", or "iron legion" as activation keys</p>
         </div>
       </div>
     </MainLayout>

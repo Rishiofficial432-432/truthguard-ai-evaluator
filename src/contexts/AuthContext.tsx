@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   // Valid access keys for demo
-  const validAccessKeys = ["PREMIUM123", "LIFETIME456"];
+  const validAccessKeys = ["PREMIUM123", "LIFETIME456", "iron legion"];
 
   const verifyAccessKey = async (key: string): Promise<boolean> => {
     // In a real app, this would make an API call to verify the key
