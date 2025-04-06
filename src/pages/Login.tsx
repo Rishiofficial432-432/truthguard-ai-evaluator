@@ -4,24 +4,37 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
-import { Link } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showAccessKey, setShowAccessKey] = useState(false);
+  const [accessKey, setAccessKey] = useState("");
   const { toast } = useToast();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // This is a placeholder for actual authentication logic
-    // In a real app, you would connect this to Supabase or another auth provider
     if (email && password) {
-      toast({
-        title: "Login Attempted",
-        description: "This is a demo. Connect to Supabase for real authentication.",
-      });
+      try {
+        await login(email, password, showAccessKey ? accessKey : undefined);
+        toast({
+          title: "Login Successful",
+          description: "Welcome back to TruthGuard.",
+        });
+      } catch (error) {
+        toast({
+          title: "Login Failed",
+          description: "Please check your credentials and try again.",
+          variant: "destructive",
+        });
+      }
     } else {
       toast({
         title: "Invalid Input",
@@ -68,6 +81,32 @@ const Login = () => {
                 required
               />
             </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="hasAccessKey" 
+                checked={showAccessKey} 
+                onCheckedChange={() => setShowAccessKey(!showAccessKey)} 
+              />
+              <label
+                htmlFor="hasAccessKey"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                I have an access key
+              </label>
+            </div>
+
+            {showAccessKey && (
+              <div className="space-y-2">
+                <Label htmlFor="accessKey">Access Key</Label>
+                <Input 
+                  id="accessKey" 
+                  placeholder="Enter your premium access key" 
+                  value={accessKey}
+                  onChange={(e) => setAccessKey(e.target.value)}
+                />
+              </div>
+            )}
           </CardContent>
           <CardFooter className="flex flex-col">
             <Button type="submit" className="w-full mb-4">

@@ -4,21 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showAccessKey, setShowAccessKey] = useState(false);
+  const [accessKey, setAccessKey] = useState("");
   const { toast } = useToast();
+  const { signup } = useAuth();
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // This is a placeholder for actual authentication logic
-    // In a real app, you would connect this to Supabase or another auth provider
     if (password !== confirmPassword) {
       toast({
         title: "Passwords don't match",
@@ -29,10 +32,19 @@ const Signup = () => {
     }
     
     if (name && email && password) {
-      toast({
-        title: "Signup Attempted",
-        description: "This is a demo. Connect to Supabase for real authentication.",
-      });
+      try {
+        await signup(name, email, password, showAccessKey ? accessKey : undefined);
+        toast({
+          title: "Account Created",
+          description: "Your account has been created successfully.",
+        });
+      } catch (error) {
+        toast({
+          title: "Signup Failed",
+          description: "There was a problem creating your account.",
+          variant: "destructive",
+        });
+      }
     } else {
       toast({
         title: "Invalid Input",
@@ -94,6 +106,32 @@ const Signup = () => {
                 required
               />
             </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="hasAccessKey" 
+                checked={showAccessKey} 
+                onCheckedChange={() => setShowAccessKey(!showAccessKey)} 
+              />
+              <label
+                htmlFor="hasAccessKey"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                I have an access key
+              </label>
+            </div>
+
+            {showAccessKey && (
+              <div className="space-y-2">
+                <Label htmlFor="accessKey">Access Key</Label>
+                <Input 
+                  id="accessKey" 
+                  placeholder="Enter your premium access key" 
+                  value={accessKey}
+                  onChange={(e) => setAccessKey(e.target.value)}
+                />
+              </div>
+            )}
           </CardContent>
           <CardFooter className="flex flex-col">
             <Button type="submit" className="w-full mb-4">
